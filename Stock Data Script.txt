@@ -4,47 +4,47 @@ Dim ws As Worksheet
 
 Set ws = ActiveSheet
 
-For Each ws In Worksheets
+ For Each ws In Worksheets
 
-ws.Cells(1, 9).Value = "Ticker"
-ws.Cells(1, 10).Value = "Yearly Change"
-ws.Cells(1, 11).Value = "Percent Change"
-ws.Cells(1, 12).Value = "Total Stock Volume"
-ws.Cells(2, 15).Value = "Greatest % Increase"
-ws.Cells(3, 15).Value = "Greatest % Decrease"
-ws.Cells(4, 15).Value = "Greatest Total Volume"
-ws.Cells(1, 16).Value = "Ticker"
-ws.Cells(1, 17).Value = "Value"
+ ws.Cells(1, 9).Value = "Ticker"
+ ws.Cells(1, 10).Value = "Yearly Change"
+ ws.Cells(1, 11).Value = "Percent Change"
+ ws.Cells(1, 12).Value = "Total Stock Volume"
+ ws.Cells(2, 15).Value = "Greatest % Increase"
+ ws.Cells(3, 15).Value = "Greatest % Decrease"
+ ws.Cells(4, 15).Value = "Greatest Total Volume"
+ ws.Cells(1, 16).Value = "Ticker"
+ ws.Cells(1, 17).Value = "Value"
 
-Dim ticker As String
-Dim yearly_change As Double
-Dim percent_change As Double
-Dim year_opn As Double
-Dim year_cls As Double
+ Dim ticker As String
+ Dim yearly_change As Double
+ Dim percent_change As Double
+ Dim year_opn As Double
+ Dim year_cls As Double
 
-Dim greatest_percent_increase As Double
-greatest_percent_increase = 0
-Dim greatest_percent_decrease As Double
-greatest_percent_decrease = 0
-Dim greatest_total As LongLong
-greatest_total = 0
-Dim gpi_ticker As String
-Dim gpd_ticker As String
-Dim gt_ticker As String
+ Dim greatest_percent_increase As Double
+ greatest_percent_increase = 0
+ Dim greatest_percent_decrease As Double
+ greatest_percent_decrease = 0
+ Dim greatest_total As LongLong
+ greatest_total = 0
+ Dim gpi_ticker As String
+ Dim gpd_ticker As String
+ Dim gt_ticker As String
     
-Dim vol_total As LongLong
-vol_total = 0
+ Dim vol_total As LongLong
+ vol_total = 0
     
-Dim Summary_Table_Row As Integer
-Summary_Table_Row = 2
+ Dim Summary_Table_Row As Integer
+ Summary_Table_Row = 2
 
-Dim LastRow As Long
+ Dim LastRow As Long
 
-LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+ LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
 
-year_opn = ws.Cells(2, 3).Value
+ year_opn = ws.Cells(2, 3).Value
 
-ws.Columns("A:Q").AutoFit
+ ws.Columns("A:Q").AutoFit
  
      For i = 2 To LastRow
      
@@ -73,32 +73,33 @@ ws.Columns("A:Q").AutoFit
                   Else
                      percent_change = 0
         
-                 End If
+                  End If
         
             ws.Range("K" & Summary_Table_Row).Value = percent_change
             ws.Range("K" & Summary_Table_Row).NumberFormat = "0.00%"
             
-                If (yearly_change < 0) Then
+                 If (yearly_change < 0) Then
                      ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
         
-                ElseIf (yearly_change >= 0) Then
+                 ElseIf (yearly_change >= 0) Then
                     ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
-                End If
+                
+                 End If
                 
             Summary_Table_Row = Summary_Table_Row + 1
             
             year_opn = ws.Cells(i + 1, 3).Value
         
-                If percent_change > greatest_percent_increase Then
-                greatest_percent_increase = percent_change
-                gpi_ticker = ticker
+                 If percent_change > greatest_percent_increase Then
+                     greatest_percent_increase = percent_change
+                     gpi_ticker = ticker
                 
-                ElseIf percent_change < greatest_percent_decrease Then
-                greatest_percent_decrease = percent_change
-                gpd_ticker = ticker
+                 ElseIf percent_change < greatest_percent_decrease Then
+                     greatest_percent_decrease = percent_change
+                     gpd_ticker = ticker
                 
-                ElseIf vol_total > greatest_total Then
-                greatest_total = vol_total
+                 ElseIf vol_total > greatest_total Then
+                 greatest_total = vol_total
                 gt_ticker = ticker
                 
                 End If
