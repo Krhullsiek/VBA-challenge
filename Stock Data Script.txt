@@ -1,0 +1,130 @@
+Sub Stock_Data():
+
+Dim ws As Worksheet
+
+Set ws = ActiveSheet
+
+For Each ws In Worksheets
+
+ws.Cells(1, 9).Value = "Ticker"
+ws.Cells(1, 10).Value = "Yearly Change"
+ws.Cells(1, 11).Value = "Percent Change"
+ws.Cells(1, 12).Value = "Total Stock Volume"
+ws.Cells(2, 15).Value = "Greatest % Increase"
+ws.Cells(3, 15).Value = "Greatest % Decrease"
+ws.Cells(4, 15).Value = "Greatest Total Volume"
+ws.Cells(1, 16).Value = "Ticker"
+ws.Cells(1, 17).Value = "Value"
+
+Dim ticker As String
+Dim yearly_change As Double
+Dim percent_change As Double
+Dim year_opn As Double
+Dim year_cls As Double
+
+Dim greatest_percent_increase As Double
+greatest_percent_increase = 0
+Dim greatest_percent_decrease As Double
+greatest_percent_decrease = 0
+Dim greatest_total As LongLong
+greatest_total = 0
+Dim gpi_ticker As String
+Dim gpd_ticker As String
+Dim gt_ticker As String
+    
+Dim vol_total As LongLong
+vol_total = 0
+    
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+Dim LastRow As Long
+
+LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+year_opn = ws.Cells(2, 3).Value
+
+ws.Columns("A:Q").AutoFit
+ 
+     For i = 2 To LastRow
+     
+    
+        If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+        
+            ticker = ws.Cells(i, 1).Value
+            year_cls = ws.Cells(i, 6).Value
+            
+            yearly_change = year_cls - year_opn
+        
+            vol_total = vol_total + ws.Cells(i, 7).Value
+        
+            ws.Range("I" & Summary_Table_Row).Value = ticker
+        
+            ws.Range("J" & Summary_Table_Row).Value = yearly_change
+          
+            ws.Range("L" & Summary_Table_Row).Value = vol_total
+        
+                  If yearly_change <> 0 And year_opn <> 0 Then
+                     percent_change = yearly_change / year_opn
+                     
+                  ElseIf yearly_change <> 0 And year_opn = 0 Then
+                     percent_change = 100
+        
+                  Else
+                     percent_change = 0
+        
+                 End If
+        
+            ws.Range("K" & Summary_Table_Row).Value = percent_change
+            ws.Range("K" & Summary_Table_Row).NumberFormat = "0.00%"
+            
+                If (yearly_change < 0) Then
+                     ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
+        
+                ElseIf (yearly_change >= 0) Then
+                    ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
+                End If
+                
+            Summary_Table_Row = Summary_Table_Row + 1
+            
+            year_opn = ws.Cells(i + 1, 3).Value
+        
+                If percent_change > greatest_percent_increase Then
+                greatest_percent_increase = percent_change
+                gpi_ticker = ticker
+                
+                ElseIf percent_change < greatest_percent_decrease Then
+                greatest_percent_decrease = percent_change
+                gpd_ticker = ticker
+                
+                ElseIf vol_total > greatest_total Then
+                greatest_total = vol_total
+                gt_ticker = ticker
+                
+                End If
+            
+            ws.Cells(2, 16).Value = gpi_ticker
+            ws.Cells(3, 16).Value = gpd_ticker
+            ws.Cells(4, 16).Value = gt_ticker
+            ws.Cells(2, 17).Value = greatest_percent_increase
+            ws.Cells(3, 17).Value = greatest_percent_decrease
+            ws.Cells(4, 17).Value = greatest_total
+            
+            ws.Cells(2, 17).NumberFormat = "0.00%"
+            ws.Cells(3, 17).NumberFormat = "0.00%"
+                
+            vol_total = 0
+        
+        Else
+        
+            vol_total = vol_total + ws.Cells(i, 7).Value
+        
+        End If
+
+     Next i
+    
+   Next ws
+      
+End Sub
+
+
