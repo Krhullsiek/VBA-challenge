@@ -1,65 +1,65 @@
 # VBA-challenge
-Sub Stock_Data():
+ Sub Stock_Data():
 
-  ' Set initial variable for worksheet
-Dim ws As Worksheet
+    ' Set initial variable for worksheet
+ Dim ws As Worksheet
 
-  'Activate worksheets so that we can run program through each worksheet
-Set ws = ActiveSheet
+    'Activate worksheets so that we can run program through each worksheet
+ Set ws = ActiveSheet
 
-  'Use For command to ensure process takes place in each worksheet in workbook
-For Each ws In Worksheets
+    'Use For command to ensure process takes place in each worksheet in workbook
+  For Each ws In Worksheets
 
-  'Create column labels for out results
-ws.Cells(1, 9).Value = "Ticker"
-ws.Cells(1, 10).Value = "Yearly Change"
-ws.Cells(1, 11).Value = "Percent Change"
-ws.Cells(1, 12).Value = "Total Stock Volume"
-ws.Cells(2, 15).Value = "Greatest % Increase"
-ws.Cells(3, 15).Value = "Greatest % Decrease"
-ws.Cells(4, 15).Value = "Greatest Total Volume"
-ws.Cells(1, 16).Value = "Ticker"
-ws.Cells(1, 17).Value = "Value"
+    'Create column labels ofr the variables
+  ws.Cells(1, 9).Value = "Ticker"
+  ws.Cells(1, 10).Value = "Yearly Change"
+  ws.Cells(1, 11).Value = "Percent Change"
+  ws.Cells(1, 12).Value = "Total Stock Volume"
+  ws.Cells(2, 15).Value = "Greatest % Increase"
+  ws.Cells(3, 15).Value = "Greatest % Decrease"
+  ws.Cells(4, 15).Value = "Greatest Total Volume"
+  ws.Cells(1, 16).Value = "Ticker"
+  ws.Cells(1, 17).Value = "Value"
 
-  'Set initial variables for ticker selections, the changes from open to close, percent changes, open and close
-Dim ticker As String
-Dim yearly_change As Double
-Dim percent_change As Double
-Dim year_opn As Double
-Dim year_cls As Double
+    'Set initial variables for ticker selections, the changes from open to close, percent changes, open and close
+  Dim ticker As String
+  Dim yearly_change As Double
+  Dim percent_change As Double
+  Dim year_opn As Double
+  Dim year_cls As Double
+  
+    'Set initial variables for greatest percent increase, decrease and total along with their ticker names
+  Dim greatest_percent_increase As Double
+  greatest_percent_increase = 0
+  Dim greatest_percent_decrease As Double
+  greatest_percent_decrease = 0
+  Dim greatest_total As LongLong
+  greatest_total = 0
+  Dim gpi_ticker As String
+  Dim gpd_ticker As String
+  Dim gt_ticker As String
 
-  'Set initial variables for greatest percent increase, decrease and total along with their ticker names
-Dim greatest_percent_increase As Double
-greatest_percent_increase = 0
-Dim greatest_percent_decrease As Double
-greatest_percent_decrease = 0
-Dim greatest_total As LongLong
-greatest_total = 0
-Dim gpi_ticker As String
-Dim gpd_ticker As String
-Dim gt_ticker As String
+    'Set initial variables for volume total and start at 0 for adding totals between different tickers
+  Dim vol_total As LongLong
+  vol_total = 0
 
-  'Set initial variables for volume total and start at 0 for adding totals between different tickers
-Dim vol_total As LongLong
-vol_total = 0
+    'Set initial variables and starting point for tracking ticker in loops
+  Dim Summary_Table_Row As Integer
+  Summary_Table_Row = 2
 
-  'Set initial variables and starting point for tracking ticker in loops
-Dim Summary_Table_Row As Integer
-Summary_Table_Row = 2
+    'Set initial variables for using last row
+  Dim LastRow As Long
 
-  'Set initial variables for using last row
-Dim LastRow As Long
+    'Define last row in order to count and locate the last row in a column
+  LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
 
-  'Define last row in order to count and locate the last row in a column
-LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+    'Define where to grab year open
+  year_opn = ws.Cells(2, 3).Value
 
-  'Define where to grab year open
-year_opn = ws.Cells(2, 3).Value
-
-  'Resize the columns to properly fit the text
-ws.Columns("A:Q").AutoFit
+    'Resize the columns to properly fit the text
+  ws.Columns("A:Q").AutoFit
  
-        'Check the entire ticker row
+         'Check the entire ticker row
      For i = 2 To LastRow
      
             'If we are at the end of the first ticker row, so end of year, then proceed below
